@@ -306,7 +306,8 @@
 
     listDiv.innerHTML = '';
     data.forEach(item => {
-      const link = `${window.location.origin}/?u=${item.slug}`;
+      // ИСХОДЯЩАЯ ССЫЛКА ТЕПЕРЬ КРАСИВАЯ (БЕЗ ?u=)
+      const link = `${window.location.origin}/${item.slug}`;
       listDiv.innerHTML += `
         <div class="student-item">
           <div class="student-info">
