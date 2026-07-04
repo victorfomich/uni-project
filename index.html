@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Student Service System</title>
+<style>
+  :root{
+    --blue-1:#63b4e8;
+    --blue-2:#2f86cf;
+    --blue-accent:#4f8fdb;
+    --blue-link:#2f6fce;
+    --text-main:#2c2f36;
+    --text-sub:#6b7280;
+    --border:#e6e8ec;
+    --bg-page:#f2f4f7;
+    --bg-card:#ffffff;
+    --danger-badge:#e6483f;
+    --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    background:var(--bg-page);
+    color:var(--text-main);
+  }
+  a{text-decoration:none;color:var(--blue-link);}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ---------- HEADER ---------- */
+  header.topbar{
+    background:linear-gradient(135deg,var(--blue-1),var(--blue-2));
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    color:#fff;
+    min-width:0;
+  }
+  .brand svg.emblem{flex:none;}
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.15;
+  }
+  .brand-cn{font-size:15px;font-weight:600;letter-spacing:1px;}
+  .brand-en{font-size:11px;letter-spacing:2px;opacity:.85;}
+  .brand-divider{
+    width:1px;height:34px;background:rgba(255,255,255,.5);
+    margin:0 4px;
+  }
+  .brand-title{font-size:22px;font-weight:700;white-space:nowrap;}
+
+  .topbar-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .lang-toggle{
+    display:flex;
+    background:rgba(255,255,255,.25);
+    border-radius:20px;
+    padding:3px;
+  }
+  .lang-toggle button{
+    border:none;
+    background:transparent;
+    padding:6px 16px;
+    border-radius:18px;
+    font-size:13px;
+    color:#fff;
+    transition:.15s;
+  }
+  .lang-toggle button.active{
+    background:#fff;
+    color:var(--blue-2);
+    font-weight:600;
+  }
+  .user-block{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#fff;
+  }
+  .avatar-sm{
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.35);
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+  }
+  .user-meta{line-height:1.25;}
+  .user-name{font-size:14px;font-weight:600;}
+  .user-email{font-size:12px;opacity:.9;}
+  .chevron{opacity:.85;margin-left:2px;}
+  .mail-wrap{position:relative;color:#fff;}
+  .badge{
+    position:absolute;top:-6px;right:-7px;
+    background:var(--danger-badge);
+    color:#fff;font-size:10px;font-weight:700;
+    min-width:16px;height:16px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    padding:0 3px;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  main{
+    max-width:1400px;
+    margin:0 auto;
+    padding:24px 28px 60px;
+  }
+  .card{
+    background:var(--bg-card);
+    border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+    padding:26px 30px;
+    margin-bottom:22px;
+  }
+
+  /* ---------- PROFILE CARD ---------- */
+  .profile-card{
+    display:flex;
+    align-items:center;
+    gap:26px;
+    flex-wrap:wrap;
+  }
+  .avatar-lg{
+    width:96px;height:96px;border-radius:50%;
+    border:3px solid var(--blue-1);
+    background:#eef2f6;
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+  }
+  .profile-info{
+    flex:1 1 260px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:6px 14px;
+    font-size:14px;
+  }
+  .profile-info dt{color:var(--text-sub);grid-column:1;}
+  .profile-info dd{margin:0;grid-column:2;font-weight:500;}
+  .bind-link{
+    margin-left:auto;
+    font-size:14px;
+    white-space:nowrap;
+  }
+
+  /* ---------- ICON GRID ---------- */
+  .icon-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    row-gap:34px;
+  }
+  .icon-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    text-align:center;
+    color:var(--text-main);
+    cursor:pointer;
+    padding:4px;
+  }
+  .icon-item svg{
+    stroke:#5b6472;
+    transition:stroke .15s,transform .15s;
+  }
+  .icon-item:hover svg{stroke:var(--blue-2);transform:translateY(-2px);}
+  .icon-item span{font-size:13.5px;color:#3c4049;}
+  .icon-item:hover span{color:var(--blue-2);}
+
+  /* ---------- APPLICATION LIST ---------- */
+  .list-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .list-head h2{font-size:17px;margin:0;color:#4a4f57;}
+  .list-head a{font-size:14px;font-weight:600;}
+
+  table.app-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  .app-table thead th{
+    text-align:left;
+    color:#3c4049;
+    font-weight:600;
+    border-bottom:1px solid var(--border);
+    padding:10px 12px;
+  }
+  .app-table tbody td{
+    padding:14px 12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  .app-table tbody tr:nth-child(1){background:#f7f9fb;}
+  .app-no-link{font-weight:600;background:#dbe9f8;padding:2px 6px;border-radius:3px;}
+
+  .btn{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:4px;
+    border:1px solid var(--blue-accent);
+    color:var(--blue-accent);
+    background:#fff;
+    font-size:13px;
+    margin-right:6px;
+  }
+  .btn-solid{
+    background:var(--blue-accent);
+    color:#fff;
+    border:1px solid var(--blue-accent);
+    font-weight:600;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1100px){
+    .icon-grid{grid-template-columns:repeat(4,1fr);}
+  }
+  @media (max-width:860px){
+    .brand-title{font-size:18px;}
+    header.topbar{padding:12px 16px;}
+    main{padding:18px 14px 40px;}
+    .card{padding:20px 18px;}
+    .icon-grid{grid-template-columns:repeat(3,1fr);row-gap:26px;}
+    .bind-link{margin-left:0;width:100%;}
+    .profile-card{gap:16px;}
+  }
+  @media (max-width:600px){
+    .brand-en{display:none;}
+    .brand-divider{display:none;}
+    .user-meta{display:none;}
+    .topbar-right{gap:10px;}
+    .icon-grid{grid-template-columns:repeat(2,1fr);}
+    .avatar-lg{width:76px;height:76px;}
+
+    table.app-table thead{display:none;}
+    table.app-table, table.app-table tbody, table.app-table tr, table.app-table td{
+      display:block;width:100%;
+    }
+    table.app-table tr{
+      border:1px solid var(--border);
+      border-radius:6px;
+      margin-bottom:12px;
+      padding:6px 4px;
+    }
+    table.app-table td{
+      border-bottom:none;
+      padding:8px 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      text-align:right;
+    }
+    table.app-table td::before{
+      content:attr(data-label);
+      font-weight:600;
+      color:var(--text-sub);
+      text-align:left;
+    }
+    table.app-table tbody tr:nth-child(1){background:transparent;}
+  }
+
+  /* Экран загрузки и ошибок */
+  #loading-screen {
+    text-align: center;
+    padding: 100px 20px;
+    font-size: 18px;
+    color: var(--text-sub);
+  }
+  #main-content {
+    display: none;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="emblem" width="42" height="42" viewBox="0 0 42 42" fill="none">
+      <circle cx="21" cy="21" r="20" stroke="#ffffff" stroke-width="1.6"/>
+      <circle cx="21" cy="21" r="14" stroke="#ffffff" stroke-width="1.2"/>
+      <text x="21" y="26" text-anchor="middle" font-size="13" fill="#ffffff" font-family="serif">WZU</text>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-cn">温州大學</span>
+      <span class="brand-en">WENZHOU UNIVERSITY</span>
+    </div>
+    <div class="brand-divider"></div>
+    <span class="brand-title" data-i18n="brand_title">International Student Service System</span>
+  </div>
+
+  <div class="topbar-right">
+    <div class="lang-toggle">
+      <button id="btn-zh" onclick="setLang('zh')">中文</button>
+      <button id="btn-en" class="active" onclick="setLang('en')">English</button>
+    </div>
+
+    <div class="user-block">
+      <div class="avatar-sm">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/>
+        </svg>
+      </div>
+      <div class="user-meta">
+        <div class="user-name" id="top-username">Loading...</div>
+        <div class="user-email" id="top-email">Loading...</div>
+      </div>
+      <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+
+    <div class="mail-wrap">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.7">
+        <rect x="3" y="5" width="18" height="14" rx="2"/>
+        <path d="M3 6l9 7 9-7"/>
+      </svg>
+      <span class="badge">2</span>
+    </div>
+  </div>
+</header>
+
+<div id="loading-screen">
+  Loading secure data...
+</div>
+
+<main id="main-content">
+
+  <section class="card profile-card">
+    <div class="avatar-lg">
+      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#a9b2bd" stroke-width="1.6">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/>
+      </svg>
+    </div>
+    <dl class="profile-info">
+      <dt data-i18n="lbl_username">User Name:</dt><dd id="prof-username"></dd>
+      <dt data-i18n="lbl_email">E-mail:</dt><dd id="prof-email"></dd>
+      <dt data-i18n="lbl_lastsignin">Last Sign In Time:</dt><dd id="prof-lastsignin"></dd>
+    </dl>
+    <a href="#" class="bind-link" data-i18n="bind_info">Bind Study Information</a>
+  </section>
+
+  <section class="card">
+    <div class="icon-grid">
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 8l6-1M8 12l6-1"/><path d="M14 15l3-3 2 2-3 3-2.4.6.4-2.6z"/></svg><span data-i18n="i_start">Start Application</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 21V6l6-3 6 3v15"/><path d="M6 21h12"/><path d="M10 21v-5h4v5"/><path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg><span data-i18n="i_dorm">Dormitory Reservations</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 14l7-1 4-6 2 .5-2 6 5-.5 2 2-8 2-3 3-2-.5 1-3-6-1z"/><rect x="6" y="17" width="10" height="4" rx="1"/></svg><span data-i18n="i_airport">Airport Pickup</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h3M12 8v8M9.5 12h5"/><circle cx="17" cy="16" r="2.4"/></svg><span data-i18n="i_payment">Online Payment</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M5 3h10l4 4v14H5z"/><path d="M9 9h6M9 13h4"/><circle cx="10" cy="18" r="2.4"/><path d="M11.7 19.7L14 22"/></svg><span data-i18n="i_query">Query Results</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span data-i18n="i_attendance">Attendance Results</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="1.5"/><circle cx="12" cy="9" r="2.6"/><path d="M9 9l-1.3-.4.4-1.3M15 9l1.3-.4-.4-1.3"/><path d="M8.5 16c.6-1.6 2-2.5 3.5-2.5s2.9.9 3.5 2.5"/></svg><span data-i18n="i_teach">Teaching Evaluation</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="15" cy="5" r="1.8"/><path d="M9 20l2.5-5 2-2-1-4 3 2 1.5 3.5H21"/><path d="M8 12l3-2 2 2-3 5-4.5 1.3"/></svg><span data-i18n="i_activity">Activity</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="6" y="7" width="12" height="14" rx="2"/><path d="M9 7V5a3 3 0 016 0v2"/><path d="M6 12h12"/></svg><span data-i18n="i_leaving">Leaving Procedures</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.6-2.2 1.8-2.5 3.4"/><circle cx="12" cy="16.2" r="0.4" fill="#5b6472"/></svg><span data-i18n="i_notes">Application Notes</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg><span data-i18n="i_map">School Map</span></div>
+      <div class="icon-item"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 20.2C10 18 4 14 4 9.5A4 4 0 0112 7a4 4 0 018 2.5c0 4.5-6 8.5-8 10.7z"/><path d="M8 10.5a4 4 0 016 0M9.5 12.5a2.2 2.2 0 013 0"/></svg><span data-i18n="i_psycho">Psychometrics</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="list-head">
+      <h2 data-i18n="app_list_title">Last Application List</h2>
+      <a href="#" data-i18n="more_link">More &gt;&gt;</a>
+    </div>
+
+    <table class="app-table">
+      <thead>
+        <tr>
+          <th data-i18n="col_appno">Application No.</th>
+          <th data-i18n="col_plan">Study Plan</th>
+          <th data-i18n="col_status">status</th>
+          <th data-i18n="col_time">Time of Creation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label-i18n="col_appno"><a href="#" class="app-no-link" id="app-no"></a></td>
+          <td data-label-i18n="col_plan" id="app-plan"></td>
+          <td data-label-i18n="col_status" id="app-status"></td>
+          <td data-label-i18n="col_time" id="app-time"></td>
+        </tr>
+        <tr>
+          <td data-label-i18n="operation_label">
+            <span class="btn" data-i18n="btn_view">View</span>
+            <span class="btn" data-i18n="btn_edit">Edit</span>
+            <span class="btn" data-i18n="btn_changeplan">Change Study Plan</span>
+          </td>
+          <td></td>
+          <td data-label-i18n="download_label"></td>
+          <td data-label-i18n="download_label"><span class="btn btn-solid" data-i18n="btn_download">Download Application Form</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+// ---------- TRANSLATIONS ----------
+const translations = {
+  en:{
+    brand_title:"International Student Service System",
+    lbl_username:"User Name:",
+    lbl_email:"E-mail:",
+    lbl_lastsignin:"Last Sign In Time:",
+    bind_info:"Bind Study Information",
+    i_start:"Start Application",
+    i_dorm:"Dormitory Reservations",
+    i_airport:"Airport Pickup",
+    i_payment:"Online Payment",
+    i_query:"Query Results",
+    i_attendance:"Attendance Results",
+    i_teach:"Teaching Evaluation",
+    i_activity:"Activity",
+    i_leaving:"Leaving Procedures",
+    i_notes:"Application Notes",
+    i_map:"School Map",
+    i_psycho:"Psychometrics",
+    app_list_title:"Last Application List",
+    more_link:"More >>",
+    col_appno:"Application No.",
+    col_plan:"Study Plan",
+    col_status:"status",
+    col_time:"Time of Creation",
+    operation_label:"Operation",
+    download_label:"Download",
+    btn_view:"View",
+    btn_edit:"Edit",
+    btn_changeplan:"Change Study Plan",
+    btn_download:"Download Application Form"
+  },
+  zh:{
+    brand_title:"留学生服务系统",
+    lbl_username:"用户名：",
+    lbl_email:"邮箱：",
+    lbl_lastsignin:"上次登录时间：",
+    bind_info:"绑定学籍信息",
+    i_start:"开始申请",
+    i_dorm:"宿舍预订",
+    i_airport:"机场接机",
+    i_payment:"在线支付",
+    i_query:"查询结果",
+    i_attendance:"考勤结果",
+    i_teach:"教学评估",
+    i_activity:"活动",
+    i_leaving:"离校手续",
+    i_notes:"申请须知",
+    i_map:"校园地图",
+    i_psycho:"心理测评",
+    app_list_title:"最近申请列表",
+    more_link:"更多 >>",
+    col_appno:"申请编号",
+    col_plan:"学习计划",
+    col_status:"状态",
+    col_time:"创建时间",
+    operation_label:"操作",
+    download_label:"下载",
+    btn_view:"查看",
+    btn_edit:"编辑",
+    btn_changeplan:"更改学习计划",
+    btn_download:"下载申请表"
+  }
+};
+
+function setLang(lang){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(translations[lang][key] !== undefined){
+      el.textContent = translations[lang][key];
+    }
+  });
+  document.querySelectorAll('[data-label-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-label-i18n');
+    if(translations[lang][key] !== undefined){
+      el.setAttribute('data-label', translations[lang][key]);
+    }
+  });
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-zh').classList.toggle('active', lang==='zh');
+  document.documentElement.lang = lang;
+}
+
+// ---------- SUPABASE LOGIC CLIENT ----------
+const SUPABASE_URL = 'https://mehfkjsysdiaicxogwok.supabase.co'; 
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1laGZranN5c2RpYWljeG9nd29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNjQ3NTAsImV4cCI6MjA5ODc0MDc1MH0.4vsowM6tv7kkO2m5jXZA2Jou0RC4tUDMonLkmhFqO7o';
+
+let clientSupabase = null;
+try {
+  if (SUPABASE_URL && !SUPABASE_URL.includes('YOUR_PROJECT') && window.supabase) {
+    clientSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+} catch(e) {
+  console.error(e);
+}
+
+async function loadData() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get('u');
+  const loadingScreen = document.getElementById('loading-screen');
+
+  if (!slug) {
+    loadingScreen.innerHTML = "<h2>Access Denied. No student identifier provided in URL.</h2><p>Please open this page using a link generated from the admin panel.</p>";
+    return;
+  }
+
+  if (!clientSupabase) {
+    loadingScreen.innerHTML = "<h2>Configuration Error.</h2><p>Supabase connection keys are not configured inside index.html.</p>";
+    return;
+  }
+
+  try {
+    const { data, error } = await clientSupabase
+      .from('students')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+    if (error || !data) {
+      loadingScreen.innerHTML = "<h2>Page not found or has been deleted.</h2><p>Check if the link matches the one in your admin panel.</p>";
+      return;
+    }
+
+    // Заполняем HTML данными
+    document.getElementById('top-username').textContent = data.username;
+    document.getElementById('top-email').textContent = data.email;
+    
+    document.getElementById('prof-username').textContent = data.username;
+    document.getElementById('prof-email').textContent = data.email;
+    document.getElementById('prof-lastsignin').textContent = data.last_sign_in;
+
+    document.getElementById('app-no').textContent = data.app_no;
+    document.getElementById('app-plan').textContent = data.study_plan;
+    document.getElementById('app-status').textContent = data.status;
+    document.getElementById('app-time').textContent = data.creation_time;
+
+    // Смена стилей статуса (красный, если просит исправить)
+    const statusEl = document.getElementById('app-status');
+    if (data.status.toLowerCase().includes('correct') || data.status.toLowerCase().includes('re-submit')) {
+      statusEl.style.color = '#e6483f';
+      statusEl.style.fontWeight = 'bold';
+    }
+
+    // Показываем контент
+    loadingScreen.style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+
+    setLang('en');
+  } catch (err) {
+    loadingScreen.innerHTML = "<h2>Error connecting to server.</h2><p>" + err.message + "</p>";
+  }
+}
+
+window.onload = function() {
+  loadData();
+};
+</script>
+
+</body>
+</html>
