@@ -6,125 +6,34 @@
 <title>Admin Panel - WZU</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-    background: #f2f4f7; 
-    margin: 0; 
-    color: #2c2f36;
-  }
-  
-  /* ИНДИКАТОР СТАТУСА БАЗЫ ДАННЫХ */
-  .db-status {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    z-index: 1000;
-    background: #fff;
-  }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: #f2f4f7; margin: 0; color: #2c2f36; }
+  .db-status { position: fixed; top: 15px; right: 15px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); z-index: 1000; background: #fff; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; }
   .status-checking { background: #ff9800; }
   .status-online { background: #4caf50; }
   .status-offline { background: #f44336; }
-
-  #login-screen { 
-    height: 100vh; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-  }
-  .login-card {
-    background: #fff; 
-    padding: 30px; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 320px; 
-    text-align: center;
-  }
-  #admin-dashboard { 
-    display: none; 
-    padding: 40px 20px; 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    gap: 30px; 
-    grid-template-columns: 1fr 1fr; 
-  }
-  .card { 
-    background: #fff; 
-    padding: 24px; 
-    border-radius: 8px; 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06); 
-  }
-  .card h3 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;}
-  
+  #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .login-card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 320px; text-align: center; }
+  #admin-dashboard { display: none; padding: 40px 20px; max-width: 1400px; margin: 0 auto; gap: 30px; grid-template-columns: 1fr 1fr; }
+  .card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .card h3 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #111827;}
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
   .form-group { margin-bottom: 12px; }
+  .form-group.full { grid-column: span 2; }
   .form-group label { display: block; font-size: 13px; color: #6b7280; margin-bottom: 4px; font-weight: bold;}
-  
-  input { 
-    padding: 10px; 
-    width: 100%; 
-    box-sizing: border-box; 
-    border: 1px solid #e6e8ec; 
-    border-radius: 6px;
-    font-size: 14px;
-  }
+  input { padding: 10px; width: 100%; box-sizing: border-box; border: 1px solid #e6e8ec; border-radius: 6px; font-size: 14px; }
   input:focus { border-color: #2f86cf; outline: none; }
-  
-  button { 
-    background: #2f86cf; 
-    color: white; 
-    border: none; 
-    cursor: pointer; 
-    font-weight: 600; 
-    padding: 12px;
-    border-radius: 6px;
-    width: 100%;
-    margin-top: 10px;
-    transition: 0.2s;
-  }
+  button { background: #2f86cf; color: white; border: none; cursor: pointer; font-weight: 600; padding: 12px; border-radius: 6px; width: 100%; margin-top: 10px; transition: 0.2s; }
   button:hover { background: #1c6ba8; }
-  
   .btn-danger { background: #e6483f; width: auto; padding: 6px 12px; font-size: 12px; margin: 0; }
   .btn-danger:hover { background: #c53830; }
-  
-  .student-item { 
-    border: 1px solid #e6e8ec; 
-    padding: 16px; 
-    border-radius: 6px;
-    margin-bottom: 12px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    background: #fafafa;
-  }
+  .student-item { border: 1px solid #e6e8ec; padding: 16px; border-radius: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
   .student-info strong { font-size: 16px; color: #2c2f36;}
   .student-info p { margin: 4px 0 8px 0; font-size: 13px; color: #6b7280; }
-  .student-info a { 
-    color: #2f6fce; 
-    text-decoration: none; 
-    word-break: break-all; 
-    font-size: 14px;
-    background: #eef2f6;
-    padding: 4px 8px;
-    border-radius: 4px;
-    display: inline-block;
-  }
+  .student-info a { color: #2f6fce; text-decoration: none; word-break: break-all; font-size: 14px; background: #eef2f6; padding: 4px 8px; border-radius: 4px; display: inline-block; }
   .student-info a:hover { text-decoration: underline; }
-
-  @media (max-width: 768px) {
-    #admin-dashboard { grid-template-columns: 1fr; }
-  }
+  h4 { margin: 20px 0 10px; color: #2f86cf; border-bottom: 2px solid #2f86cf; display: inline-block; padding-bottom: 4px; font-size: 14px; }
+  @media (max-width: 768px) { #admin-dashboard { grid-template-columns: 1fr; } .form-grid { grid-template-columns: 1fr; } .form-group.full { grid-column: span 1; } }
 </style>
 </head>
 <body>
@@ -137,7 +46,7 @@
 <div id="login-screen">
   <div class="login-card">
     <h2 style="margin-top: 0; color: #2c2f36;">Admin Access</h2>
-    <input type="password" id="password" placeholder="Введите пароль" style="margin-bottom: 15px;">
+    <input type="password" id="password" placeholder="Введите пароль (1958)" style="margin-bottom: 15px;">
     <button onclick="checkPassword()">Войти в панель</button>
   </div>
 </div>
@@ -146,36 +55,30 @@
   <div class="card">
     <h3>Создать новую страницу студента</h3>
     
-    <div class="form-group">
-      <label>User Name</label>
-      <input type="text" id="username" placeholder="Например: ViktorF">
+    <h4>Основная информация</h4>
+    <div class="form-grid">
+      <div class="form-group"><label>User Name</label><input type="text" id="username" placeholder="ViktorF"></div>
+      <div class="form-group"><label>E-mail</label><input type="text" id="email" placeholder="2016alfa@gmail.com"></div>
+      <div class="form-group"><label>Last Sign In Time</label><input type="text" id="last_sign_in" placeholder="2026-07-04 18:19:13"></div>
+      <div class="form-group"><label>Application No.</label><input type="text" id="app_no" placeholder="20260500109"></div>
+      <div class="form-group full"><label>Study Plan</label><input type="text" id="study_plan" placeholder="Wenzhou University Scholarship"></div>
+      <div class="form-group"><label>Status (Заявки)</label><input type="text" id="status" placeholder="Please Correct and Re-submit"></div>
+      <div class="form-group"><label>Time of Creation</label><input type="text" id="creation_time" placeholder="2026-05-08 21:32:32"></div>
     </div>
-    <div class="form-group">
-      <label>E-mail</label>
-      <input type="text" id="email" placeholder="Например: 2016alfa2016@gmail.com">
+
+    <h4>Данные об оплате (Tuition Payment)</h4>
+    <div class="form-grid">
+      <div class="form-group"><label>Original Tuition Fee</label><input type="text" id="orig_tuition" placeholder="18,000" value="18,000"></div>
+      <div class="form-group"><label>Scholarship % (только цифра)</label><input type="text" id="schol_pct" placeholder="50" value="50"></div>
+      <div class="form-group"><label>Scholarship Amount</label><input type="text" id="schol_amt" placeholder="9,000" value="9,000"></div>
+      <div class="form-group"><label>Tuition After Scholarship</label><input type="text" id="tuition_after" placeholder="9,000" value="9,000"></div>
+      <div class="form-group"><label>Admission Deposit % (только цифра)</label><input type="text" id="dep_pct" placeholder="30" value="30"></div>
+      <div class="form-group"><label>Admission Deposit Amount</label><input type="text" id="dep_amt" placeholder="2,700" value="2,700"></div>
+      <div class="form-group"><label>Remaining Balance</label><input type="text" id="rem_bal" placeholder="6,300" value="6,300"></div>
+      <div class="form-group"><label>Payment Status (текст)</label><input type="text" id="pay_status" placeholder="Payment Required" value="Payment Required"></div>
     </div>
-    <div class="form-group">
-      <label>Last Sign In Time</label>
-      <input type="text" id="last_sign_in" placeholder="Например: 2026-07-04 18:19:13">
-    </div>
-    <div class="form-group">
-      <label>Application No.</label>
-      <input type="text" id="app_no" placeholder="Например: 20260500109">
-    </div>
-    <div class="form-group">
-      <label>Study Plan</label>
-      <input type="text" id="study_plan" placeholder="Например: Wenzhou University Admission Scholarship">
-    </div>
-    <div class="form-group">
-      <label>Status</label>
-      <input type="text" id="status" placeholder="Например: Please Correct and Re-submit">
-    </div>
-    <div class="form-group">
-      <label>Time of Creation</label>
-      <input type="text" id="creation_time" placeholder="Например: 2026-05-08 21:32:32">
-    </div>
-    
-    <button onclick="createPage()">Сгенерировать ссылку</button>
+
+    <button onclick="createPage()" style="margin-top: 20px;">Сгенерировать ссылку</button>
   </div>
 
   <div class="card">
@@ -193,47 +96,27 @@
   let supabaseClient = null;
   let isDbConnected = false;
 
-  // Безопасная инициализация
   try {
     if (SUPABASE_URL && !SUPABASE_URL.includes('YOUR_PROJECT') && window.supabase) {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     }
-  } catch (e) {
-    console.error("Supabase init error:", e);
-  }
+  } catch (e) { console.error(e); }
 
   function updateStatusUI(type, message) {
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if(dot && text) {
-      dot.className = 'status-dot ' + type;
-      text.textContent = message;
-    }
+    if(dot && text) { dot.className = 'status-dot ' + type; text.textContent = message; }
   }
 
   async function checkDatabaseConnection() {
-    if (!supabaseClient) {
-      updateStatusUI('status-offline', 'Ключи базы данных не настроены');
-      isDbConnected = false;
-      document.getElementById('list').innerHTML = "<p style='color:#e6483f;'>Укажите корректные URL и ANON_KEY в коде скрипта.</p>";
-      return;
-    }
-
+    if (!supabaseClient) { updateStatusUI('status-offline', 'Ключи базы данных не настроены'); return; }
     try {
       const { error } = await supabaseClient.from('students').select('id').limit(1);
       if (error) throw error;
-
       updateStatusUI('status-online', 'База данных: Подключено');
       isDbConnected = true;
-      
-      if (document.getElementById('admin-dashboard').style.display === 'grid') {
-        fetchPages();
-      }
-    } catch (err) {
-      updateStatusUI('status-offline', 'Ошибка авторизации / Таблица не найдена');
-      isDbConnected = false;
-      document.getElementById('list').innerHTML = `<p style='color:#e6483f;'>Ошибка подключения. Проверьте, создана ли таблица 'students' в Supabase.</p>`;
-    }
+      if (document.getElementById('admin-dashboard').style.display === 'grid') fetchPages();
+    } catch (err) { updateStatusUI('status-offline', 'Ошибка авторизации / Таблица не найдена'); }
   }
 
   function checkPassword() {
@@ -241,28 +124,18 @@
     if(pwd === '1958') {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-dashboard').style.display = 'grid';
-      if (isDbConnected) {
-        fetchPages();
-      }
-    } else {
-      alert('Неверный пароль!');
-    }
+      if (isDbConnected) fetchPages();
+    } else { alert('Неверный пароль!'); }
   }
 
-  document.getElementById('password').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') checkPassword();
-  });
+  document.getElementById('password').addEventListener('keypress', function (e) { if (e.key === 'Enter') checkPassword(); });
 
   function generateSlug() {
     return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 8);
   }
 
   async function createPage() {
-    if (!isDbConnected) {
-      alert("Невозможно сохранить: База данных недоступна!");
-      return;
-    }
-
+    if (!isDbConnected) { alert("База данных недоступна!"); return; }
     const dataObj = {
       slug: generateSlug(),
       username: document.getElementById('username').value || 'Unknown',
@@ -271,73 +144,53 @@
       app_no: document.getElementById('app_no').value || '-',
       study_plan: document.getElementById('study_plan').value || '-',
       status: document.getElementById('status').value || '-',
-      creation_time: document.getElementById('creation_time').value || '-'
+      creation_time: document.getElementById('creation_time').value || '-',
+      
+      orig_tuition: document.getElementById('orig_tuition').value || '18,000',
+      schol_pct: document.getElementById('schol_pct').value || '50',
+      schol_amt: document.getElementById('schol_amt').value || '9,000',
+      tuition_after: document.getElementById('tuition_after').value || '9,000',
+      dep_pct: document.getElementById('dep_pct').value || '30',
+      dep_amt: document.getElementById('dep_amt').value || '2,700',
+      rem_bal: document.getElementById('rem_bal').value || '6,300',
+      pay_status: document.getElementById('pay_status').value || 'Payment Required'
     };
-
     const { error } = await supabaseClient.from('students').insert([dataObj]);
-    
-    if (error) {
-      alert("Ошибка записи в таблицу: " + error.message);
-    } else {
-      alert("Страница создана!");
-      fetchPages(); 
-      document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
-    }
+    if (error) { alert("Ошибка: " + error.message); } 
+    else { alert("Страница создана!"); fetchPages(); }
   }
 
   async function fetchPages() {
     if (!isDbConnected) return;
-
     const listDiv = document.getElementById('list');
-    const { data, error } = await supabaseClient
-      .from('students')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (error) {
-      listDiv.innerHTML = "Ошибка чтения данных.";
-      return;
-    }
-    
-    if (data.length === 0) {
-      listDiv.innerHTML = "<p style='color:#6b7280;'>Список пуст. Сгенерируйте первую ссылку.</p>";
-      return;
-    }
-
+    const { data, error } = await supabaseClient.from('students').select('*').order('created_at', { ascending: false });
+    if (error) { listDiv.innerHTML = "Ошибка чтения."; return; }
+    if (data.length === 0) { listDiv.innerHTML = "<p>Список пуст.</p>"; return; }
     listDiv.innerHTML = '';
+    
     data.forEach(item => {
-      // ИСХОДЯЩАЯ ССЫЛКА ТЕПЕРЬ КРАСИВАЯ (БЕЗ ?u=)
-      const link = `${window.location.origin}/${item.slug}`;
+      // Здесь жестко прописан ваш домен для идеальных ссылок
+      const link = `https://wenzhou-university.info/${item.slug}`;
       listDiv.innerHTML += `
         <div class="student-item">
           <div class="student-info">
-            <strong>${item.username}</strong>
-            <p>${item.email} | ${item.app_no}</p>
+            <strong>${item.username}</strong><p>${item.email} | ${item.app_no}</p>
             <a href="${link}" target="_blank">${link}</a>
           </div>
-          <div>
-            <button class="btn-danger" onclick="deletePage('${item.id}')">Удалить</button>
-          </div>
-        </div>
-      `;
+          <div><button class="btn-danger" onclick="deletePage('${item.id}')">Удалить</button></div>
+        </div>`;
     });
   }
 
   async function deletePage(id) {
     if (!isDbConnected) return;
-    if(confirm("Удалить ссылку окончательно?")) {
+    if(confirm("Удалить ссылку?")) {
       const { error } = await supabaseClient.from('students').delete().eq('id', id);
-      if(error) alert("Ошибка: " + error.message);
-      else fetchPages();
+      if(error) alert("Ошибка: " + error.message); else fetchPages();
     }
   }
 
-  window.onload = function() {
-    checkDatabaseConnection();
-  };
+  window.onload = function() { checkDatabaseConnection(); };
 </script>
 </body>
 </html>
-
-
-
