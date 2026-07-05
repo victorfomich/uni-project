@@ -52,6 +52,17 @@
     line-height: 1.15;
   }
 
+  .brand-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .brand-link:hover {
+    opacity: 0.88;
+  }
+
   .brand-cn {
     font-size: 15px;
     font-weight: 600;
@@ -797,10 +808,10 @@
 
 <header class="topbar">
   <div class="brand">
-    <div class="brand-text">
+    <a class="brand-text brand-link" href="https://cic.wzu.edu.cn/" target="_blank" rel="noopener noreferrer">
       <span class="brand-cn">温州大學</span>
       <span class="brand-en">WENZHOU UNIVERSITY</span>
-    </div>
+    </a>
     <span class="brand-title" data-i18n="brand_title">International Student Service System</span>
   </div>
   <div class="topbar-right">
