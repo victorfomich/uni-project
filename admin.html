@@ -33,6 +33,11 @@
   .student-info a { color: #2f6fce; text-decoration: none; word-break: break-all; font-size: 14px; background: #eef2f6; padding: 4px 8px; border-radius: 4px; display: inline-block; }
   .student-info a:hover { text-decoration: underline; }
   h4 { margin: 20px 0 10px; color: #2f86cf; border-bottom: 2px solid #2f86cf; display: inline-block; padding-bottom: 4px; font-size: 14px; }
+  .photo-preview-wrap { margin-top: 10px; display: flex; align-items: center; gap: 12px; }
+  .photo-preview { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid #63b4e8; display: none; background: #f5f7fa; }
+  .photo-hint { font-size: 12px; color: #9ca3af; margin-top: 6px; }
+  .student-thumb { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #63b4e8; margin-right: 12px; flex-shrink: 0; background: #f5f7fa; }
+  .student-row { display: flex; align-items: center; flex: 1; min-width: 0; }
   @media (max-width: 768px) { #admin-dashboard { grid-template-columns: 1fr; } .form-grid { grid-template-columns: 1fr; } .form-group.full { grid-column: span 1; } }
 </style>
 </head>
@@ -64,6 +69,14 @@
       <div class="form-group full"><label>Study Plan</label><input type="text" id="study_plan" placeholder="Wenzhou University Scholarship"></div>
       <div class="form-group"><label>Status (Заявки)</label><input type="text" id="status" placeholder="Please Correct and Re-submit"></div>
       <div class="form-group"><label>Time of Creation</label><input type="text" id="creation_time" placeholder="2026-05-08 21:32:32"></div>
+      <div class="form-group full">
+        <label>Фото студента (необязательно)</label>
+        <input type="file" id="photo" accept="image/jpeg,image/png,image/webp,image/gif">
+        <p class="photo-hint">JPG, PNG, WEBP. Если не загрузить — на сайте будет пустой круг.</p>
+        <div class="photo-preview-wrap">
+          <img id="photo-preview" class="photo-preview" alt="Preview">
+        </div>
+      </div>
     </div>
 
     <h4>Данные об оплате (Tuition Payment)</h4>
@@ -91,6 +104,7 @@
   // ---------- ВСТАВЬТЕ СВОИ ДАННЫЕ СЮДА ----------
   const SUPABASE_URL = 'https://mehfkjsysdiaicxogwok.supabase.co'; 
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1laGZranN5c2RpYWljeG9nd29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNjQ3NTAsImV4cCI6MjA5ODc0MDc1MH0.4vsowM6tv7kkO2m5jXZA2Jou0RC4tUDMonLkmhFqO7o';
+  const STORAGE_BUCKET = 'student-photos';
   // ------------------------------------------------
 
   let globalSupabase = null;
@@ -149,6 +163,19 @@
         if (e.key === 'Enter') checkPassword(); 
       });
     }
+    const photoInput = document.getElementById('photo');
+    if (photoInput) {
+      photoInput.addEventListener('change', function() {
+        const preview = document.getElementById('photo-preview');
+        if (this.files && this.files[0]) {
+          preview.src = URL.createObjectURL(this.files[0]);
+          preview.style.display = 'block';
+        } else {
+          preview.style.display = 'none';
+          preview.removeAttribute('src');
+        }
+      });
+    }
     checkDatabaseConnection();
   });
 
@@ -156,13 +183,50 @@
     return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 8);
   }
 
+  async function uploadPhoto(slug) {
+    const fileInput = document.getElementById('photo');
+    if (!fileInput.files || !fileInput.files[0]) return null;
+
+    const file = fileInput.files[0];
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const path = slug + '.' + ext;
+
+    const { error } = await globalSupabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(path, file, { upsert: true, contentType: file.type });
+
+    if (error) throw error;
+
+    const { data } = globalSupabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+    return data.publicUrl + '?t=' + Date.now();
+  }
+
+  function clearPhotoInput() {
+    const photoInput = document.getElementById('photo');
+    const preview = document.getElementById('photo-preview');
+    photoInput.value = '';
+    preview.style.display = 'none';
+    preview.removeAttribute('src');
+  }
+
   async function createPage() {
     if (!isDbConnected || !globalSupabase) { 
       alert("База данных недоступна!"); 
       return; 
     }
+
+    const slug = generateSlug();
+    let photo_url = null;
+
+    try {
+      photo_url = await uploadPhoto(slug);
+    } catch (e) {
+      alert("Ошибка загрузки фото: " + e.message + "\n\nПроверьте, что в Supabase создан bucket '" + STORAGE_BUCKET + "' (public).");
+      return;
+    }
+
     const dataObj = {
-      slug: generateSlug(),
+      slug: slug,
       username: document.getElementById('username').value || 'Unknown',
       email: document.getElementById('email').value || 'No Email',
       last_sign_in: document.getElementById('last_sign_in').value || '-',
@@ -180,12 +244,15 @@
       rem_bal: document.getElementById('rem_bal').value || '6,300',
       pay_status: document.getElementById('pay_status').value || 'Payment Required'
     };
+
+    if (photo_url) dataObj.photo_url = photo_url;
     
     const { error } = await globalSupabase.from('students').insert([dataObj]);
     if (error) { 
       alert("Ошибка: " + error.message); 
     } else { 
       alert("Страница создана!"); 
+      clearPhotoInput();
       fetchPages(); 
     }
   }
@@ -206,11 +273,17 @@
     
     data.forEach(item => {
       const link = `https://wenzhou-university.info/${item.slug}`;
+      const thumb = item.photo_url
+        ? `<img class="student-thumb" src="${item.photo_url}" alt="">`
+        : `<div class="student-thumb"></div>`;
       listDiv.innerHTML += `
         <div class="student-item">
-          <div class="student-info">
-            <strong>${item.username}</strong><p>${item.email} | ${item.app_no}</p>
-            <a href="${link}" target="_blank">${link}</a>
+          <div class="student-row">
+            ${thumb}
+            <div class="student-info">
+              <strong>${item.username}</strong><p>${item.email} | ${item.app_no}</p>
+              <a href="${link}" target="_blank">${link}</a>
+            </div>
           </div>
           <div><button class="btn-danger" onclick="deletePage('${item.id}')">Удалить</button></div>
         </div>`;

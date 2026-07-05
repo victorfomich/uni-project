@@ -137,47 +137,122 @@
   .profile-card {
     display: flex;
     align-items: center;
-    gap: 26px;
-    flex-wrap: wrap;
+    gap: 28px;
+    padding: 24px 30px;
+  }
+
+  .profile-avatar {
+    flex-shrink: 0;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid var(--blue-1);
+    overflow: hidden;
+    background: #f5f7fa;
+  }
+
+  .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .profile-body {
+    flex: 1;
+    min-width: 0;
   }
 
   .profile-info {
-    flex: 1 1 260px;
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 6px 14px;
+    grid-template-columns: max-content 1fr;
+    gap: 10px 18px;
     font-size: 14px;
+    margin: 0;
   }
 
   .profile-info dt {
     color: var(--text-sub);
+    text-align: right;
+    white-space: nowrap;
   }
 
   .profile-info dd {
     margin: 0;
     font-weight: 500;
+    color: var(--text-main);
+    word-break: break-word;
+  }
+
+  .profile-bind {
+    flex-shrink: 0;
+    color: var(--blue-link);
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+    padding-left: 16px;
+  }
+
+  .profile-bind:hover {
+    text-decoration: underline;
   }
 
   /* ICONS GRID */
   .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    row-gap: 34px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 28px 20px 32px;
   }
 
   .icon-item {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    font-size: 13.5px;
+    gap: 10px;
     cursor: pointer;
-    transition: color 0.15s;
+    padding: 0 6px;
+    transition: transform 0.15s;
   }
 
   .icon-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .icon-item:hover .icon-label {
     color: var(--blue-link);
+  }
+
+  .icon-circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #eef5fc, #dceaf8);
+    border: 1px solid #c8ddf2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--blue-2);
+  }
+
+  .icon-circle svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+
+  .icon-label {
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+    color: var(--text-main);
+    width: 100%;
+    transition: color 0.15s;
   }
 
   /* SECTION HEADER */
@@ -438,9 +513,32 @@
     display: none;
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 900px) {
     .icon-grid {
-      grid-template-columns: repeat(3, 1fr);
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px 16px;
+    }
+
+    .icon-item {
+      flex: 0 0 calc(33.333% - 16px);
+      max-width: none;
+    }
+
+    .profile-card {
+      flex-wrap: wrap;
+    }
+
+    .profile-bind {
+      width: 100%;
+      padding-left: 0;
+      padding-top: 4px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .icon-item {
+      flex: 0 0 calc(50% - 12px);
     }
 
     .ops-row {
@@ -478,24 +576,53 @@
 
 <main id="main-content">
   <section class="card profile-card">
-    <dl class="profile-info">
-      <dt data-i18n="lbl_username">User Name:</dt>
-      <dd id="prof-username"></dd>
-      <dt data-i18n="lbl_email">E-mail:</dt>
-      <dd id="prof-email"></dd>
-      <dt data-i18n="lbl_lastsignin">Last Sign In Time:</dt>
-      <dd id="prof-lastsignin"></dd>
-    </dl>
+    <div class="profile-avatar" id="profile-avatar">
+      <img id="profile-photo" alt="" style="display:none;">
+    </div>
+    <div class="profile-body">
+      <dl class="profile-info">
+        <dt data-i18n="lbl_username">User Name:</dt>
+        <dd id="prof-username"></dd>
+        <dt data-i18n="lbl_email">E-mail:</dt>
+        <dd id="prof-email"></dd>
+        <dt data-i18n="lbl_lastsignin">Last Sign In Time:</dt>
+        <dd id="prof-lastsignin"></dd>
+      </dl>
+    </div>
+    <a href="#" class="profile-bind" data-i18n="bind_study" onclick="return false;">Bind Study Information</a>
   </section>
 
   <section class="card" style="padding: 0; overflow: hidden;">
-    <div style="padding: 20px 24px 0;">
-      <div class="icon-grid">
-        <div class="icon-item" onclick="showModal('start')"><span data-i18n="i_start">Start Application</span></div>
-        <div class="icon-item" onclick="window.open('https://cic.wzu.edu.cn/prospective/Housing.htm', '_blank')"><span data-i18n="i_dorm">Dormitory</span></div>
-        <div class="icon-item" onclick="window.open('https://wwwe.wzu.edu.tw/english/internationalExchanges.html', '_blank')"><span data-i18n="i_airport">Airport Pickup</span></div>
-        <div class="icon-item" onclick="showModal('payment')"><span data-i18n="i_payment">Online Payment</span></div>
-        <div class="icon-item" onclick="showModal('attendance')"><span data-i18n="i_attendance">Attendance</span></div>
+    <div class="icon-grid">
+      <div class="icon-item" onclick="showModal('start')">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 13h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+        </div>
+        <span class="icon-label" data-i18n="i_start">Start Application</span>
+      </div>
+      <div class="icon-item" onclick="window.open('https://cic.wzu.edu.cn/prospective/Housing.htm', '_blank')">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
+        </div>
+        <span class="icon-label" data-i18n="i_dorm">Dormitory</span>
+      </div>
+      <div class="icon-item" onclick="window.open('https://wwwe.wzu.edu.tw/english/internationalExchanges.html', '_blank')">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+        </div>
+        <span class="icon-label" data-i18n="i_airport">Airport Pickup</span>
+      </div>
+      <div class="icon-item" onclick="showModal('payment')">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        </div>
+        <span class="icon-label" data-i18n="i_payment">Online Payment</span>
+      </div>
+      <div class="icon-item" onclick="showModal('attendance')">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
+        </div>
+        <span class="icon-label" data-i18n="i_attendance">Attendance</span>
       </div>
     </div>
   </section>
@@ -633,6 +760,7 @@ const translations = {
     lbl_username: "User Name:",
     lbl_email: "E-mail:",
     lbl_lastsignin: "Last Sign In Time:",
+    bind_study: "Bind Study Information",
     i_start: "Start Application",
     i_dorm: "Dormitory",
     i_airport: "Airport Pickup",
@@ -679,6 +807,7 @@ const translations = {
     lbl_username: "用户名：",
     lbl_email: "邮箱：",
     lbl_lastsignin: "上次登录时间：",
+    bind_study: "绑定学习信息",
     i_start: "开始申请",
     i_dorm: "宿舍预订",
     i_airport: "机场接机",
@@ -811,6 +940,15 @@ async function loadData() {
     document.getElementById('prof-username').textContent = data.username;
     document.getElementById('prof-email').textContent = data.email;
     document.getElementById('prof-lastsignin').textContent = data.last_sign_in;
+
+    const photoImg = document.getElementById('profile-photo');
+    if (data.photo_url) {
+      photoImg.src = data.photo_url;
+      photoImg.style.display = 'block';
+    } else {
+      photoImg.removeAttribute('src');
+      photoImg.style.display = 'none';
+    }
     
     document.getElementById('app-no').textContent = data.app_no;
     document.getElementById('app-plan').textContent = data.study_plan;
