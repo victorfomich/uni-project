@@ -133,6 +133,11 @@
     margin-bottom: 22px;
   }
 
+  .card.flush-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
   /* PROFILE CARD */
   .profile-card {
     display: flex;
@@ -440,6 +445,46 @@
     margin-bottom: 6px;
   }
 
+  .deadline-banner {
+    background: #fff8e6;
+    border-top: 1px solid #f5d78e;
+    border-bottom: 1px solid #f5d78e;
+    border-left: 4px solid #ea580c;
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #92400e;
+  }
+
+  .deadline-banner strong.deadline-title {
+    display: block;
+    color: #c2410c;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .deadline-banner .deadline-date {
+    color: #c2410c;
+    font-weight: 700;
+  }
+
+  .section-pad {
+    padding: 20px 24px 0;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-scroll .data-table {
+    min-width: 520px;
+  }
+
+  .table-scroll.tuition-table-wrap .data-table {
+    min-width: 360px;
+  }
+
   /* MODAL */
   .modal-overlay {
     display: none;
@@ -513,37 +558,237 @@
     display: none;
   }
 
+  /* TABLET */
+  @media (max-width: 1024px) {
+    main {
+      padding: 20px 20px 48px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+    }
+
+    .icon-grid {
+      padding: 24px 12px 28px;
+      gap: 16px 10px;
+    }
+
+    .icon-item {
+      max-width: 140px;
+    }
+
+    .icon-circle {
+      width: 52px;
+      height: 52px;
+    }
+
+    .icon-circle svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  /* SMALL TABLET / LARGE PHONE */
+  @media (max-width: 768px) {
+    header.topbar {
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 16px;
+    }
+
+    .brand {
+      flex: 1 1 100%;
+      gap: 10px;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .topbar-right {
+      width: 100%;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .user-meta {
+      text-align: right;
+    }
+
+    .user-name {
+      font-size: 13px;
+    }
+
+    .user-email {
+      font-size: 11px;
+      word-break: break-all;
+    }
+
+    main {
+      padding: 14px 12px 36px;
+    }
+
+    .card {
+      margin-bottom: 16px;
+      border-radius: 6px;
+    }
+
+    .profile-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 16px;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+    }
+
+    .profile-info {
+      grid-template-columns: 1fr;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .profile-info dt {
+      text-align: left;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .profile-info dt:first-child {
+      margin-top: 0;
+    }
+
+    .profile-info dd {
+      font-size: 14px;
+    }
+
+    .profile-bind {
+      padding-left: 0;
+      white-space: normal;
+      font-size: 13px;
+    }
+
+    .section-pad {
+      padding: 16px 14px 0;
+    }
+
+    .section-header h2 {
+      font-size: 15px;
+    }
+
+    .more-link {
+      font-size: 13px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .ops-row {
+      padding: 12px;
+      gap: 12px;
+    }
+
+    .ops-group {
+      width: 100%;
+    }
+
+    .btn {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+
+    .info-panel-section {
+      padding: 14px 12px;
+      font-size: 13px;
+    }
+
+    .deadline-banner {
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .modal-box {
+      padding: 24px 20px 20px;
+    }
+  }
+
   @media (max-width: 900px) {
     .icon-grid {
       flex-wrap: wrap;
       justify-content: center;
-      gap: 24px 16px;
+      gap: 20px 12px;
+      padding: 20px 10px 24px;
     }
 
     .icon-item {
-      flex: 0 0 calc(33.333% - 16px);
+      flex: 0 0 calc(33.333% - 12px);
       max-width: none;
-    }
-
-    .profile-card {
-      flex-wrap: wrap;
-    }
-
-    .profile-bind {
-      width: 100%;
-      padding-left: 0;
-      padding-top: 4px;
     }
   }
 
-  @media (max-width: 560px) {
+  /* PHONE */
+  @media (max-width: 480px) {
+    .brand-cn {
+      font-size: 13px;
+    }
+
+    .brand-en {
+      font-size: 10px;
+    }
+
+    .brand-title {
+      font-size: 13px;
+    }
+
+    .lang-toggle button {
+      padding: 5px 12px;
+      font-size: 12px;
+    }
+
     .icon-item {
-      flex: 0 0 calc(50% - 12px);
+      flex: 0 0 calc(50% - 10px);
+    }
+
+    .icon-label {
+      font-size: 11px;
     }
 
     .ops-row {
       flex-direction: column;
+      align-items: stretch;
+    }
+
+    .ops-group {
+      flex-direction: column;
       align-items: flex-start;
+      gap: 8px;
+    }
+
+    .ops-label {
+      margin-right: 0;
+    }
+
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    #loading-screen {
+      padding: 60px 16px;
+      font-size: 16px;
     }
   }
 </style>
@@ -592,7 +837,7 @@
     <a href="#" class="profile-bind" data-i18n="bind_study" onclick="return false;">Bind Study Information</a>
   </section>
 
-  <section class="card" style="padding: 0; overflow: hidden;">
+  <section class="card flush-card">
     <div class="icon-grid">
       <div class="icon-item" onclick="showModal('start')">
         <div class="icon-circle">
@@ -627,14 +872,15 @@
     </div>
   </section>
 
-  <section class="card" style="padding: 0; overflow: hidden;">
-    <div style="padding: 20px 24px 0;">
+  <section class="card flush-card">
+    <div class="section-pad">
       <div class="section-header">
         <h2 data-i18n="app_list_title">Last Application List</h2>
         <a href="#" class="more-link" data-i18n="more_link" onclick="return false;">More &gt;&gt;</a>
       </div>
     </div>
-    <table class="data-table" style="margin-top: 12px;">
+    <div class="table-scroll" style="margin-top: 12px;">
+      <table class="data-table">
       <thead>
         <tr>
           <th data-i18n="col_appno">Application No.</th>
@@ -651,7 +897,8 @@
           <td id="app-time"></td>
         </tr>
       </tbody>
-    </table>
+      </table>
+    </div>
     <div class="ops-row">
       <div class="ops-group">
         <span class="ops-label" data-i18n="lbl_operation">Operation</span>
@@ -666,14 +913,15 @@
     </div>
   </section>
 
-  <section class="card" style="padding: 0; overflow: hidden;">
-    <div style="padding: 20px 24px 0;">
+  <section class="card flush-card">
+    <div class="section-pad">
       <div class="section-header">
         <h2 data-i18n="t_title">Tuition Payment</h2>
       </div>
       <p class="section-subtitle" data-i18n="t_subtitle">Admission Deposit Required</p>
     </div>
-    <table class="data-table">
+    <div class="table-scroll tuition-table-wrap">
+      <table class="data-table">
       <thead>
         <tr>
           <th data-i18n="t_item">Item</th>
@@ -702,8 +950,15 @@
           <td class="amount-col" id="val-rem-bal">¥6,300</td>
         </tr>
       </tbody>
-    </table>
+      </table>
+    </div>
     <div class="info-panel">
+      <div class="deadline-banner">
+        <strong class="deadline-title" data-i18n="p_deadline_title">Important — Payment Deadline</strong>
+        <p>
+          <span data-i18n="p_deadline_1">The admission deposit of </span>¥<span id="txt-dep-deadline">2,700</span><span data-i18n="p_deadline_2"> must be paid no later than </span><span class="deadline-date" data-i18n="p_deadline_date">21 July 2026</span><span data-i18n="p_deadline_3">.</span>
+        </p>
+      </div>
       <div class="info-panel-section">
         <h3 data-i18n="p_status_title">Payment Status</h3>
         <div class="status-badge orange" id="pay-badge">
@@ -800,7 +1055,12 @@ const translations = {
     p_m_amount: "Amount to Pay:",
     p_m_purp: "Purpose:",
     p_m_purp_val: "Admission Deposit (",
-    p_m_purp_val2: "% of Tuition Fee)"
+    p_m_purp_val2: "% of Tuition Fee)",
+    p_deadline_title: "Important — Payment Deadline",
+    p_deadline_1: "The admission deposit of ",
+    p_deadline_2: " must be paid no later than ",
+    p_deadline_date: "21 July 2026",
+    p_deadline_3: "."
   },
   zh: {
     brand_title: "留学生服务系统",
@@ -847,7 +1107,12 @@ const translations = {
     p_m_amount: "应付金额：",
     p_m_purp: "用途：",
     p_m_purp_val: "录取押金（学费的 ",
-    p_m_purp_val2: "%）"
+    p_m_purp_val2: "%）",
+    p_deadline_title: "重要提示 — 缴费截止日期",
+    p_deadline_1: "录取押金 ¥",
+    p_deadline_2: " 须在 ",
+    p_deadline_date: "2026年7月21日",
+    p_deadline_3: " 前缴纳。"
   }
 };
 
@@ -976,6 +1241,7 @@ async function loadData() {
     document.getElementById('val-dep-amt').textContent = '¥' + depAmt;
     document.getElementById('txt-dep-amt1').textContent = depAmt;
     document.getElementById('txt-dep-amt2').textContent = depAmt;
+    document.getElementById('txt-dep-deadline').textContent = depAmt;
     
     document.getElementById('val-rem-bal').textContent = '¥' + (data.rem_bal || '6,300');
 
