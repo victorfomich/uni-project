@@ -161,7 +161,7 @@
   /* ICONS GRID */
   .icon-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     row-gap: 34px;
     text-align: center;
   }
@@ -173,32 +173,111 @@
     gap: 12px;
     font-size: 13.5px;
     cursor: pointer;
+    transition: color 0.15s;
   }
 
-  /* APPLICATION TABLE */
-  table.app-table {
+  .icon-item:hover {
+    color: var(--blue-link);
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header h2 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-main);
+  }
+
+  .more-link {
+    color: var(--blue-link);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .more-link:hover {
+    text-decoration: underline;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text-sub);
+    margin: 12px 0 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* DATA TABLES */
+  table.data-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
   }
 
-  .app-table th {
-    text-align: left;
-    color: #3c4049;
-    border-bottom: 1px solid var(--border);
-    padding: 10px 12px;
+  .data-table thead tr {
+    background: #f5f6f8;
   }
 
-  .app-table td {
-    padding: 14px 12px;
+  .data-table th {
+    text-align: left;
+    color: #3c4049;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e3e8;
+    padding: 10px 14px;
+  }
+
+  .data-table td {
+    padding: 14px;
     border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: top;
+  }
+
+  .data-table td.amount-col,
+  .data-table th.amount-col {
+    text-align: right;
+  }
+
+  .data-table .bold-row td {
+    font-weight: 700;
   }
 
   .app-no-link {
     font-weight: 600;
-    background: #dbe9f8;
-    padding: 2px 6px;
-    border-radius: 3px;
+    color: var(--text-main);
+  }
+
+  .ops-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    background: #fafbfc;
+  }
+
+  .ops-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .ops-label {
+    color: var(--text-sub);
+    font-size: 14px;
+    margin-right: 4px;
   }
 
   .btn {
@@ -210,82 +289,61 @@
     background: #fff;
     font-size: 13px;
     cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    background: #eef4fb;
   }
 
   .btn-solid {
     background: var(--blue-accent);
     color: #fff;
     font-weight: 600;
+    border-color: var(--blue-accent);
   }
 
-  /* TUITION PAYMENT BLOCK STYLES */
-  .tuition-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0 0 20px 0;
-    color: #111827;
+  .btn-solid:hover {
+    background: #3d7ec9;
   }
 
-  .accent-heading {
-    border-left: 4px solid #e5e7eb;
-    padding-left: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    margin: 20px 0;
-    color: #111827;
+  /* TUITION PAYMENT */
+  .info-panel {
+    border: 1px solid var(--border);
+    border-top: none;
+    background: #fff;
   }
 
-  table.tuition-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 24px;
-    font-size: 15px;
-  }
-
-  .tuition-table th {
-    text-align: left;
-    padding: 12px 0;
-    border-bottom: 1px solid #f3f4f6;
-    color: #111827;
-    font-weight: 700;
-  }
-
-  .tuition-table td {
-    padding: 16px 0;
-    border-bottom: 1px solid #f3f4f6;
-    color: #111827;
-  }
-
-  .tuition-table td:last-child,
-  .tuition-table th:last-child {
-    text-align: right;
-  }
-
-  .bold-row td {
-    font-weight: 700;
-    color: #111827;
-  }
-
-  .pay-status-block {
-    margin-top: 30px;
-    font-size: 15px;
-    line-height: 1.6;
+  .info-panel-section {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.65;
     color: #374151;
   }
 
-  .pay-status-block h3 {
-    font-size: 16px;
-    color: #111827;
-    margin-bottom: 8px;
-    margin-top: 24px;
+  .info-panel-section:last-child {
+    border-bottom: none;
+  }
+
+  .info-panel-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 0 0 10px;
+  }
+
+  .info-panel-section p {
+    margin: 0 0 8px;
+  }
+
+  .info-panel-section p:last-child {
+    margin-bottom: 0;
   }
 
   .status-badge {
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: inline-block;
   }
 
@@ -304,7 +362,68 @@
   }
 
   .pay-method-list li {
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal-box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    max-width: 440px;
+    width: 100%;
+    padding: 28px 30px 24px;
+    position: relative;
+    text-align: center;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    line-height: 1;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .modal-close:hover {
+    color: var(--text-main);
+  }
+
+  .modal-box p {
+    margin: 0 0 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+
+  .modal-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 0;
   }
 
   /* LOADING SCREEN */
@@ -322,6 +441,11 @@
   @media (max-width: 860px) {
     .icon-grid {
       grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ops-row {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>
@@ -364,20 +488,26 @@
     </dl>
   </section>
 
-  <section class="card">
-    <div class="icon-grid">
-      <div class="icon-item"><span data-i18n="i_start">Start Application</span></div>
-      <div class="icon-item"><span data-i18n="i_dorm">Dormitory</span></div>
-      <div class="icon-item"><span data-i18n="i_airport">Airport Pickup</span></div>
-      <div class="icon-item"><span data-i18n="i_payment">Online Payment</span></div>
-      <div class="icon-item"><span data-i18n="i_query">Query Results</span></div>
-      <div class="icon-item"><span data-i18n="i_attendance">Attendance</span></div>
+  <section class="card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 20px 24px 0;">
+      <div class="icon-grid">
+        <div class="icon-item" onclick="showModal('start')"><span data-i18n="i_start">Start Application</span></div>
+        <div class="icon-item" onclick="window.open('https://cic.wzu.edu.cn/prospective/Housing.htm', '_blank')"><span data-i18n="i_dorm">Dormitory</span></div>
+        <div class="icon-item" onclick="window.open('https://wwwe.wzu.edu.tw/english/internationalExchanges.html', '_blank')"><span data-i18n="i_airport">Airport Pickup</span></div>
+        <div class="icon-item" onclick="showModal('payment')"><span data-i18n="i_payment">Online Payment</span></div>
+        <div class="icon-item" onclick="showModal('attendance')"><span data-i18n="i_attendance">Attendance</span></div>
+      </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2 style="font-size:17px; margin-top:0;" data-i18n="app_list_title">Last Application List</h2>
-    <table class="app-table">
+  <section class="card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 20px 24px 0;">
+      <div class="section-header">
+        <h2 data-i18n="app_list_title">Last Application List</h2>
+        <a href="#" class="more-link" data-i18n="more_link" onclick="return false;">More &gt;&gt;</a>
+      </div>
+    </div>
+    <table class="data-table" style="margin-top: 12px;">
       <thead>
         <tr>
           <th data-i18n="col_appno">Application No.</th>
@@ -393,94 +523,107 @@
           <td id="app-status"></td>
           <td id="app-time"></td>
         </tr>
-        <tr>
-          <td>
-            <span class="btn" data-i18n="btn_view">View</span> 
-            <span class="btn" data-i18n="btn_edit">Edit</span>
-          </td>
-          <td></td>
-          <td></td>
-          <td><span class="btn btn-solid" data-i18n="btn_download">Download Form</span></td>
-        </tr>
       </tbody>
     </table>
+    <div class="ops-row">
+      <div class="ops-group">
+        <span class="ops-label" data-i18n="lbl_operation">Operation</span>
+        <span class="btn" data-i18n="btn_view">View</span>
+        <span class="btn" data-i18n="btn_edit">Edit</span>
+        <span class="btn" data-i18n="btn_change">Change Study Plan</span>
+      </div>
+      <div class="ops-group">
+        <span class="ops-label" data-i18n="lbl_download">Download</span>
+        <span class="btn btn-solid" data-i18n="btn_download">Download Application Form</span>
+      </div>
+    </div>
   </section>
 
-  <section class="card">
-    <h2 class="tuition-header">🎓 <span data-i18n="t_title">Tuition Payment</span></h2>
-    <div class="accent-heading" data-i18n="t_subtitle">Admission Deposit Required</div>
-    
-    <h3 style="margin-top:30px; font-size:16px;" data-i18n="t_info_title">Tuition Information</h3>
-    <table class="tuition-table">
+  <section class="card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 20px 24px 0;">
+      <div class="section-header">
+        <h2 data-i18n="t_title">Tuition Payment</h2>
+      </div>
+      <p class="section-subtitle" data-i18n="t_subtitle">Admission Deposit Required</p>
+    </div>
+    <table class="data-table">
       <thead>
         <tr>
           <th data-i18n="t_item">Item</th>
-          <th data-i18n="t_amount">Amount</th>
+          <th class="amount-col" data-i18n="t_amount">Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td data-i18n="t_orig">Original Tuition Fee</td>
-          <td id="val-orig">¥18,000</td>
+          <td class="amount-col" id="val-orig">¥18,000</td>
         </tr>
         <tr>
           <td><span data-i18n="t_schol">Scholarship</span> (<span id="val-schol-pct">50</span>%)</td>
-          <td id="val-schol-amt">-¥9,000</td>
+          <td class="amount-col" id="val-schol-amt">-¥9,000</td>
         </tr>
         <tr class="bold-row">
           <td data-i18n="t_after">Tuition After Scholarship</td>
-          <td id="val-after">¥9,000</td>
+          <td class="amount-col" id="val-after">¥9,000</td>
         </tr>
         <tr class="bold-row">
           <td><span data-i18n="t_req_dep">Required Admission Deposit</span> (<span id="val-dep-pct">30</span>%)</td>
-          <td id="val-dep-amt">¥2,700</td>
+          <td class="amount-col" id="val-dep-amt">¥2,700</td>
         </tr>
         <tr>
           <td data-i18n="t_rem_bal">Remaining Balance</td>
-          <td id="val-rem-bal">¥6,300</td>
+          <td class="amount-col" id="val-rem-bal">¥6,300</td>
         </tr>
       </tbody>
     </table>
-
-    <div class="pay-status-block">
-      <h3 data-i18n="p_status_title">Payment Status</h3>
-      <div class="status-badge orange" id="pay-badge">
-        <span id="pay-badge-dot">🟠</span> 
-        <span id="val-pay-status">Payment Required</span>
+    <div class="info-panel">
+      <div class="info-panel-section">
+        <h3 data-i18n="p_status_title">Payment Status</h3>
+        <div class="status-badge orange" id="pay-badge">
+          <span id="pay-badge-dot">🟠</span>
+          <span id="val-pay-status">Payment Required</span>
+        </div>
+        <p>
+          <span data-i18n="p_text_1">To confirm your enrollment and reserve your place at Wenzhou University, you are required to pay an admission deposit of </span>
+          ¥<span id="txt-dep-amt1">2,700</span>.
+        </p>
+        <p>
+          <span data-i18n="p_text_2">The deposit represents </span>
+          <span id="txt-dep-pct1">30</span>
+          <span data-i18n="p_text_3">% of your tuition fee after the scholarship.</span>
+        </p>
       </div>
-      
-      <p>
-        <span data-i18n="p_text_1">To confirm your enrollment and reserve your place at Wenzhou University, you are required to pay an admission deposit of </span>
-        ¥<span id="txt-dep-amt1">2,700</span>.
-      </p>
-      <p>
-        <span data-i18n="p_text_2">The deposit represents </span>
-        <span id="txt-dep-pct1">30</span>
-        <span data-i18n="p_text_3">% of your tuition fee after the scholarship.</span>
-      </p>
-
-      <h3 data-i18n="p_method_title">Payment Method</h3>
-      <ul class="pay-method-list">
-        <li>
-          <strong data-i18n="p_m_method">Method:</strong> 
-          <span data-i18n="p_m_cash">Cash only</span>
-        </li>
-        <li>
-          <strong data-i18n="p_m_loc">Location:</strong> 
-          <span data-i18n="p_m_office">International Student Office</span>
-        </li>
-        <li>
-          <strong data-i18n="p_m_amount">Amount to Pay:</strong> 
-          ¥<span id="txt-dep-amt2">2,700</span>
-        </li>
-        <li>
-          <strong data-i18n="p_m_purp">Purpose:</strong> 
-          <span data-i18n="p_m_purp_val">Admission Deposit (</span><span id="txt-dep-pct2">30</span><span data-i18n="p_m_purp_val2">% of Tuition Fee)</span>
-        </li>
-      </ul>
+      <div class="info-panel-section">
+        <h3 data-i18n="p_method_title">Payment Method</h3>
+        <ul class="pay-method-list">
+          <li>
+            <strong data-i18n="p_m_method">Method:</strong>
+            <span data-i18n="p_m_cash">Cash only</span>
+          </li>
+          <li>
+            <strong data-i18n="p_m_loc">Location:</strong>
+            <span data-i18n="p_m_office">International Student Office</span>
+          </li>
+          <li>
+            <strong data-i18n="p_m_amount">Amount to Pay:</strong>
+            ¥<span id="txt-dep-amt2">2,700</span>
+          </li>
+          <li>
+            <strong data-i18n="p_m_purp">Purpose:</strong>
+            <span data-i18n="p_m_purp_val">Admission Deposit (</span><span id="txt-dep-pct2">30</span><span data-i18n="p_m_purp_val2">% of Tuition Fee)</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </main>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
 
 <script>
 // ---------- TRANSLATIONS ----------
@@ -494,16 +637,19 @@ const translations = {
     i_dorm: "Dormitory",
     i_airport: "Airport Pickup",
     i_payment: "Online Payment",
-    i_query: "Query Results",
     i_attendance: "Attendance",
+    more_link: "More >>",
     app_list_title: "Last Application List",
     col_appno: "Application No.",
     col_plan: "Study Plan",
     col_status: "status",
     col_time: "Time of Creation",
+    lbl_operation: "Operation",
+    lbl_download: "Download",
     btn_view: "View",
     btn_edit: "Edit",
-    btn_download: "Download Form",
+    btn_change: "Change Study Plan",
+    btn_download: "Download Application Form",
     t_title: "Tuition Payment",
     t_subtitle: "Admission Deposit Required",
     t_info_title: "Tuition Information",
@@ -537,15 +683,18 @@ const translations = {
     i_dorm: "宿舍预订",
     i_airport: "机场接机",
     i_payment: "在线支付",
-    i_query: "查询结果",
     i_attendance: "考勤结果",
+    more_link: "更多 >>",
     app_list_title: "最近申请列表",
     col_appno: "申请编号",
     col_plan: "学习计划",
     col_status: "状态",
     col_time: "创建时间",
+    lbl_operation: "操作",
+    lbl_download: "下载",
     btn_view: "查看",
     btn_edit: "编辑",
+    btn_change: "更改学习计划",
     btn_download: "下载申请表",
     t_title: "学费支付",
     t_subtitle: "需缴纳录取押金",
@@ -580,11 +729,43 @@ function setLang(lang) {
       el.textContent = translations[lang][key];
     }
   });
-  
+
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
   document.documentElement.lang = lang;
 }
+
+const modalMessages = {
+  start: {
+    en: 'Congratulations! You have already submitted your application.',
+    zh: '恭喜！您已成功提交申请。'
+  },
+  payment: {
+    en: 'Online payment is not accepted. Please pay in cash at the university.',
+    zh: '不接受在线支付。请在大学以现金方式支付。'
+  },
+  attendance: {
+    en: 'Attendance records are not available yet.',
+    zh: '考勤记录暂不可用。'
+  }
+};
+
+function showModal(type) {
+  const msg = modalMessages[type];
+  if (!msg) return;
+  document.getElementById('modal-content').innerHTML =
+    '<p>' + msg.en + '</p><div class="modal-divider"></div><p>' + msg.zh + '</p>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(event) {
+  if (event && event.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
 
 // ---------- SUPABASE CONFIG ----------
   const SUPABASE_URL = 'https://mehfkjsysdiaicxogwok.supabase.co'; 
